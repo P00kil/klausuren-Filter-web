@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kursauswahl</title>
+    <title>Kursauswahl und Klausurtermine</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,11 +25,18 @@
             padding: 10px 15px;
             font-size: 16px;
         }
+
+        h1, h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <h1>Klausurtermine Filter</h1>
+    
     <h2>Wähle deine Kurse aus:</h2>
     <form id="courseForm">
         <select id="courseSelect" multiple>
@@ -98,14 +105,90 @@
         <button type="button" onclick="getSelectedCourses()">Ausgewählte Kurse anzeigen</button>
     </form>
 
+    <h3>PDF-Datei mit Klausurterminen:</h3>
+    <input type="file" id="pdfFile" accept="application/pdf" />
+
+    <button id="processButton">Termine anzeigen</button>
+
+    <h3>Gefundene Klausurtermine:</h3>
+    <ul id="examDates">
+        <!-- Hier werden die Klausurtermine angezeigt -->
+    </ul>
+
     <p id="output"></p>
 </div>
 
 <script>
+    // Funktion zur Anzeige der ausgewählten Kurse
     function getSelectedCourses() {
         const selectedOptions = document.getElementById('courseSelect').selectedOptions;
         const selectedValues = Array.from(selectedOptions).map(option => option.value);
         document.getElementById('output').innerText = "Ausgewählte Kurse: " + selectedValues.join(', ');
+    }
+
+    // PDF.js laden
+    const pdfjsLib = window['pdfjs-dist/build/pdf'];
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+
+    // Event-Listener für den Button "Termine anzeigen"
+    document.getElementById('processButton').addEventListener('click', () => {
+        const selectedOptions = document.getElementById('courseSelect').selectedOptions;
+        const selectedCourses = Array.from(selectedOptions).map(option => option.value);
+        const pdfFile = document.getElementById('pdfFile').files[0];
+
+        if (selectedCourses.length > 0 && pdfFile) {
+            extractExamDates(pdfFile, selectedCourses);
+        } else {
+            alert('Bitte Kurse auswählen und eine PDF-Datei hochladen.');
+        }
+    });
+
+    // PDF-Inhalt extrahieren und nach Klausurterminen filtern
+    async function extractExamDates(pdfFile, courses) {
+        const pdf = await pdfjsLib.getDocument(URL.createObjectURL(pdfFile)).promise;
+        let examDates = [];
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items.map(item => item.str).join(' ');
+
+            courses.forEach(course => {
+                if (pageText.includes(course)) {
+                    const examInfo = findExamInfo(pageText, course);
+                    if (examInfo) {
+                        examDates.push(examInfo);
+                    }
+                }
+            });
+        }
+
+        displayExamDates(examDates);
+    }
+
+    // Klausurtermine im Text finden
+    function findExamInfo(text, course) {
+        const courseIndex = text.indexOf(course);
+        if (courseIndex !== -1) {
+            return text.substring(courseIndex, courseIndex + 100); // Beispiel: 100 Zeichen ab dem Kursnamen extrahieren
+        }
+        return null;
+    }
+
+    // Gefundene Klausurtermine anzeigen
+    function displayExamDates(dates) {
+        const examDatesList = document.getElementById('examDates');
+        examDatesList.innerHTML = '';
+
+        if (dates.length > 0) {
+            dates.forEach(date => {
+                const li = document.createElement('li');
+                li.textContent = date;
+                examDatesList.appendChild(li);
+            });
+        } else {
+            examDatesList.textContent = 'Keine Klausurtermine gefunden.';
+        }
     }
 </script>
 
