@@ -1,8 +1,47 @@
+// Funktion zum Setzen von Cookies
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Funktion zum Abrufen von Cookies
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
 // Funktion zum Abrufen der ausgewählten Kurse aus der Dropdown-Liste
 function getSelectedCourses() {
     const selectedOptions = document.getElementById('courseSelect').selectedOptions;
     const selectedValues = Array.from(selectedOptions).map(option => option.value);
+    // Kurse in den Cookies speichern
+    setCookie('selectedCourses', selectedValues.join(','), 7); // Speichern für 7 Tage
     return selectedValues;
+}
+
+// Funktion zum Laden der gespeicherten Kursauswahl aus den Cookies
+function loadSelectedCourses() {
+    const selectedCourses = getCookie('selectedCourses');
+    if (selectedCourses) {
+        const selectedValues = selectedCourses.split(',');
+        const selectElement = document.getElementById('courseSelect');
+        Array.from(selectElement.options).forEach(option => {
+            if (selectedValues.includes(option.value)) {
+                option.selected = true;
+            }
+        });
+    }
 }
 
 // Funktion zum Verarbeiten der PDF und zum Filtern der Klausurtermine
@@ -74,3 +113,8 @@ function filterExamDates(text, courses) {
         examDatesList.appendChild(noMatchItem);
     }
 }
+
+// Bei Seitenaufruf die gespeicherten Kurse aus Cookies laden
+window.onload = function() {
+    loadSelectedCourses();
+};
