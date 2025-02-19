@@ -76,27 +76,34 @@
             <option value="w3 - Kr.T">w3 - Kr.T</option>
         </select>
 
-        <button type="button" id="showCoursesButton">Ausgewählte Kurse anzeigen</button>
+        <h3>Wähle die PDF-Quelle:</h3>
+        <input type="radio" id="defaultPDF" name="pdfSource" value="default" checked>
+        <label for="defaultPDF">Standard-PDF verwenden</label><br>
+
+        <input type="radio" id="uploadPDF" name="pdfSource" value="upload">
+        <label for="uploadPDF">Eigene PDF hochladen</label><br>
+
+        <div id="uploadSection" style="display: none;">
+            <input type="file" id="pdfFile" accept="application/pdf" />
+        </div>
+
+        <button id="processButton">Termine anzeigen</button>
+
+        <!-- Progressbar -->
+        <div class="progress-container">
+            <progress id="pdfProgress" value="0" max="100"></progress>
+        </div>
+
+        <h3>Gefundene Klausurtermine:</h3>
+        <ul id="examDates">
+            <!-- Hier werden die Klausurtermine angezeigt -->
+        </ul>
+
+        <p id="output"></p>
     </form>
-
-    <h3>Wähle PDF-Datei mit Klausurterminen:</h3>
-    <input type="file" id="pdfFile" accept="application/pdf" />
-
-    <button id="processButton">Termine anzeigen</button>
-
-    <!-- Progressbar hinzufügen -->
-    <div class="progress-container">
-        <progress id="pdfProgress" value="0" max="100"></progress>
-    </div>
-
-    <h3>Gefundene Klausurtermine:</h3>
-    <ul id="examDates">
-        <!-- Hier werden die Klausurtermine angezeigt -->
-    </ul>
-
-    <p id="output"></p>
 </div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
-<script src="script.js"></script> <!-- Verknüpfung zur JS-Datei -->
+<script src="script.js"></script> <!-- Verknüpfung zur JavaScript-Datei -->
 </body>
 </html>
