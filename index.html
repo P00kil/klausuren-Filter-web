@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klausurtermine Filter</title>
+    <link rel="stylesheet" href="style.css"> <!-- Verknüpfung zur CSS-Datei -->
+</head>
+<body>
+
+<div class="container">
+    <h1>Klausurtermine Filter</h1>
+    
+    <label for="courses">Geben Sie Ihre Kurse (mit Kommas getrennt) ein:</label>
+    <input type="text" id="courses" placeholder="Kurs1, Kurs2, Kurs3" />
+
+    <label for="pdfFile">Wähle PDF-Datei mit Klausurterminen:</label>
+    <input type="file" id="pdfFile" accept="application/pdf" />
+
+    <button id="processButton">Termine anzeigen</button>
+
+    <h3>Gefundene Klausurtermine:</h3>
+    <ul id="examDates">
+        <!-- Hier werden die Klausurtermine angezeigt -->
+    </ul>
+</div>
+
+<script src="script.js"></script> <!-- Verknüpfung zur JavaScript-Datei -->
+</body>
+</html>
