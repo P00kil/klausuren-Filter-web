@@ -1,3 +1,4 @@
+
 // Funktion zum Setzen von Cookies
 function setCookie(name, value, days) {
     let expires = "";
@@ -79,7 +80,7 @@ document.getElementById('processButton').addEventListener('click', function() {
             // Alle Seiteninhalte abwarten und verarbeiten
             Promise.all(pagesPromises).then(function(pagesText) {
                 const fullText = pagesText.join(' ');
-                console.log(fullText); // Zeigt den extrahierten Text in der Konsole an
+                console.log("Vollständiger Text der PDF:", fullText); // PDF-Text in der Konsole anzeigen
                 filterExamDates(fullText, courses);
                 progressBar.value = 100; // Fortschrittsleiste bei 100% setzen
             });
@@ -89,7 +90,7 @@ document.getElementById('processButton').addEventListener('click', function() {
     reader.readAsArrayBuffer(fileInput);
 });
 
-// Funktion zum Filtern und Anzeigen der Klausurtermine
+// Funktion zum Filtern und Anzeigen der Klausurtermine als (Kurs, Datum)
 function filterExamDates(text, courses) {
     const examDatesList = document.getElementById('examDates');
     examDatesList.innerHTML = ''; // Liste leeren
@@ -97,16 +98,15 @@ function filterExamDates(text, courses) {
     let foundAny = false;
 
     courses.forEach(course => {
-        // Nur das erste Wort des Kursnamens nehmen (z.B. "BIO1") und Regex verwenden
-        const courseName = course.split(' ')[0];  // Kürze den Kursnamen
-        const regex = new RegExp(courseName, 'gi');  // Flexibler Regex, der nur den Kursnamen sucht
-
-        const matches = text.match(regex);  // Sucht im Text der PDF nach dem Kursnamen
-
-        if (matches) {
+        const courseName = course.split(' ')[0];  // Nur das Kürzel des Kurses verwenden
+        // Sucht nach Kurs und extrahiert das Datum im Format TT.MM.JJJJ
+        const regex = new RegExp(`${courseName}[^\\n]*?(\\d{1,2}\\.\\d{1,2}\\.\\d{4})`, 'gi');
+        
+        let match;
+        while ((match = regex.exec(text)) !== null) {
             foundAny = true;
             const listItem = document.createElement('li');
-            listItem.textContent = `Klausurtermin für ${course}: ${matches.join(', ')}`;
+            listItem.textContent = `Kurs: ${course}, Klausurtermin: ${match[1]}`;
             examDatesList.appendChild(listItem);
         }
     });
@@ -117,8 +117,3 @@ function filterExamDates(text, courses) {
         examDatesList.appendChild(noMatchItem);
     }
 }
-
-// Bei Seitenaufruf die gespeicherten Kurse aus Cookies laden
-window.onload = function() {
-    loadSelectedCourses();
-};
