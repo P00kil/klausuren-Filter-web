@@ -79,6 +79,7 @@ document.getElementById('processButton').addEventListener('click', function() {
             // Alle Seiteninhalte abwarten und verarbeiten
             Promise.all(pagesPromises).then(function(pagesText) {
                 const fullText = pagesText.join(' ');
+                console.log(fullText); // Zeigt den extrahierten Text in der Konsole an
                 filterExamDates(fullText, courses);
                 progressBar.value = 100; // Fortschrittsleiste bei 100% setzen
             });
@@ -96,8 +97,11 @@ function filterExamDates(text, courses) {
     let foundAny = false;
 
     courses.forEach(course => {
-        const regex = new RegExp(`${course}\\s*\$begin:math:text$.*\\$end:math:text$`, 'gi');
-        const matches = text.match(regex);
+        // Nur das erste Wort des Kursnamens nehmen (z.B. "BIO1") und Regex verwenden
+        const courseName = course.split(' ')[0];  // Kürze den Kursnamen
+        const regex = new RegExp(courseName, 'gi');  // Flexibler Regex, der nur den Kursnamen sucht
+
+        const matches = text.match(regex);  // Sucht im Text der PDF nach dem Kursnamen
 
         if (matches) {
             foundAny = true;
