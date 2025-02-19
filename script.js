@@ -9,6 +9,7 @@ function getSelectedCourses() {
 document.getElementById('processButton').addEventListener('click', function() {
     const courses = getSelectedCourses();
     const fileInput = document.getElementById('pdfFile').files[0];
+    const progressBar = document.getElementById('pdfProgress'); // Progressbar
 
     if (!fileInput) {
         alert('Bitte wählen Sie eine PDF-Datei aus.');
@@ -23,11 +24,14 @@ document.getElementById('processButton').addEventListener('click', function() {
         // PDF laden
         pdfjsLib.getDocument(typedarray).promise.then(function(pdf) {
             let pagesPromises = [];
+            const totalPages = pdf.numPages;
+            progressBar.value = 0; // Fortschrittsleiste auf 0 setzen
 
             // Durch alle Seiten der PDF iterieren
-            for (let i = 1; i <= pdf.numPages; i++) {
+            for (let i = 1; i <= totalPages; i++) {
                 pagesPromises.push(pdf.getPage(i).then(function(page) {
                     return page.getTextContent().then(function(textContent) {
+                        progressBar.value = (i / totalPages) * 100; // Fortschrittsanzeige aktualisieren
                         return textContent.items.map(item => item.str).join(' ');
                     });
                 }));
@@ -37,6 +41,7 @@ document.getElementById('processButton').addEventListener('click', function() {
             Promise.all(pagesPromises).then(function(pagesText) {
                 const fullText = pagesText.join(' ');
                 filterExamDates(fullText, courses);
+                progressBar.value = 100; // Fortschrittsleiste bei 100% setzen
             });
         });
     };
