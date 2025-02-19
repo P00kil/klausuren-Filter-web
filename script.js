@@ -1,5 +1,5 @@
 // Variable zur Speicherung der standardmäßig eingebundenen PDF
-let defaultPdfUrl = '/mnt/data/Klausurtermine KL.11 2.Halbjahr 24-25.pdf';
+let defaultPdfUrl = 'https://drive.google.com/uc?export=download&id=1t16FiZ0Zd4jDlCeoy8pPn_y9XTeJ1VYf';
 
 // Bei Seitenaufruf die Auswahl der PDF-Quelle und Kurse verwalten
 document.addEventListener("DOMContentLoaded", function() {
