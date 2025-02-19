@@ -57,7 +57,7 @@ function filterExamDates(text, courses) {
     let foundAny = false;
 
     courses.forEach(course => {
-        const regex = new RegExp(course, 'gi');
+        const regex = new RegExp(`${course}\\s*\$begin:math:text$.*\\$end:math:text$`, 'gi');
         const matches = text.match(regex);
 
         if (matches) {
