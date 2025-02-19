@@ -4,7 +4,6 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs
 // Standard-PDF URL
 let defaultPdfUrl = "https://drive.google.com/uc?export=download&id=1t16FiZ0Zd4jDlCeoy8pPn_y9XTeJ1VYf";
 
-// Sicherstellen, dass das Skript erst nach Laden des DOMs läuft
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll('input[name="pdfSource"]').forEach(radio => {
         radio.addEventListener("change", function () {
@@ -13,15 +12,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("processButton").addEventListener("click", function (event) {
-        event.preventDefault(); // Verhindert das Neuladen der Seite
+        event.preventDefault();
         processPDF();
     });
+
+    loadSelectedCourses();
 });
 
 // Funktion zum Abrufen der ausgewählten Kurse
 function getSelectedCourses() {
-    return Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
-        .map(checkbox => checkbox.value);
+    return Array.from(document.querySelectorAll("input[type='checkbox']:checked")).map(input => input.value);
 }
 
 // PDF verarbeiten
@@ -35,7 +35,7 @@ function processPDF() {
         return;
     }
 
-    progressBar.value = 0; // Fortschrittsanzeige zurücksetzen
+    progressBar.value = 0;
 
     if (pdfSource === "upload") {
         const fileInput = document.getElementById("pdfFile").files[0];
@@ -66,7 +66,7 @@ function loadAndProcessPDF(pdfArray, courses, progressBar) {
     pdfjsLib.getDocument(pdfArray).promise.then(pdf => {
         let pagesPromises = [];
         const totalPages = pdf.numPages;
-        progressBar.value = 10; // Anzeige starten
+        progressBar.value = 10;
 
         for (let i = 1; i <= totalPages; i++) {
             pagesPromises.push(
@@ -82,7 +82,7 @@ function loadAndProcessPDF(pdfArray, courses, progressBar) {
         Promise.all(pagesPromises).then(pagesText => {
             let fullText = pagesText.join(" ").replace(/\s+/g, " ").trim();
 
-            console.log("Extrahierter PDF-Text:", fullText); // Debugging
+            console.log("Extrahierter PDF-Text:", fullText);
 
             filterExamDates(fullText, courses);
             progressBar.value = 100;
@@ -101,8 +101,8 @@ function filterExamDates(text, courses) {
     let foundAny = false;
 
     courses.forEach(course => {
-        const courseName = course.split(" ")[0]; // Kursnamen ohne Zusatz filtern
-        const regex = new RegExp(`${courseName}.*?(\d{1,2}\.\d{1,2}\.\d{4})`, "gi");
+        const courseName = course.split(" ")[0];
+        const regex = new RegExp(`${courseName}\s*[\/\-]\s*.*?(\d{1,2}\.\d{1,2}\.\d{4})`, "gi");
 
         let match;
         while ((match = regex.exec(text)) !== null) {
