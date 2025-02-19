@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kursauswahl und Klausurtermine</title>
-    <link rel="stylesheet" href="style.css"> <!-- Verknüpfung zur CSS-Datei -->
+    <title>Klausurtermin-Filter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>Klausurtermine Filter</h1>
+    <h1>Klausurtermine Finder</h1>
 
     <h2>Wähle deine Kurse aus:</h2>
     <form id="courseForm">
@@ -77,11 +77,15 @@
         </select>
 
         <h3>Wähle die PDF-Quelle:</h3>
-        <input type="radio" id="defaultPDF" name="pdfSource" value="default" checked>
-        <label for="defaultPDF">Standard-PDF verwenden</label><br>
+        <div>
+            <input type="radio" id="defaultPDF" name="pdfSource" value="default" checked>
+            <label for="defaultPDF">Standard-PDF</label>
+        </div>
 
-        <input type="radio" id="uploadPDF" name="pdfSource" value="upload">
-        <label for="uploadPDF">Eigene PDF hochladen</label><br>
+        <div>
+            <input type="radio" id="uploadPDF" name="pdfSource" value="upload">
+            <label for="uploadPDF">Eigene PDF hochladen</label>
+        </div>
 
         <div id="uploadSection" style="display: none;">
             <input type="file" id="pdfFile" accept="application/pdf" />
@@ -89,21 +93,18 @@
 
         <button id="processButton">Termine anzeigen</button>
 
-        <!-- Progressbar -->
         <div class="progress-container">
             <progress id="pdfProgress" value="0" max="100"></progress>
         </div>
 
         <h3>Gefundene Klausurtermine:</h3>
-        <ul id="examDates">
-            <!-- Hier werden die Klausurtermine angezeigt -->
-        </ul>
+        <ul id="examDates"></ul>
 
         <p id="output"></p>
     </form>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
-<script src="script.js"></script> <!-- Verknüpfung zur JavaScript-Datei -->
+<script src="script.js"></script>
 </body>
 </html>
