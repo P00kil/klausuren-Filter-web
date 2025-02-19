@@ -3,58 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klausurtermin-Filter</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Klausurplanung</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <h2>Wähle deine Kurse</h2>
 
-<div class="container">
-    <h1>Klausurtermine Finder</h1>
+    <!-- Leistungskurse -->
+    <details>
+        <summary>Leistungskurse</summary>
+        <ul class="leistungskurse">
+            <li><input type="checkbox" id="lk1" value="DE2 - KU.KA"> <label for="lk1">DE2 - KU.KA</label></li>
+            <li><input type="checkbox" id="lk2" value="DE3 - KU.KA"> <label for="lk2">DE3 - KU.KA</label></li>
+            <li><input type="checkbox" id="lk3" value="DE4 - LE.S"> <label for="lk3">DE4 - LE.S</label></li>
+            <li><input type="checkbox" id="lk4" value="EN1 - RE.S"> <label for="lk4">EN1 - RE.S</label></li>
+            <li><input type="checkbox" id="lk5" value="EN2 - FR.K"> <label for="lk5">EN2 - FR.K</label></li>
+        </ul>
+    </details>
 
-    <h2>Wähle deine Kurse aus:</h2>
-    <form id="courseForm">
-        <div>
-            <h3>Leistungskurse</h3>
-            <ul>
-                <li><label><input type="checkbox" value="BIO1 - Ba.S"> BIO1 - Ba.S</label></li>
-                <li><label><input type="checkbox" value="CH1 - Pi.G"> CH1 - Pi.G</label></li>
-                <li><label><input type="checkbox" value="DE1 - Pe.M"> DE1 - Pe.M</label></li>
-                <li><label><input type="checkbox" value="EN1 - Am.U"> EN1 - Am.U</label></li>
-                <li><label><input type="checkbox" value="EN2 - Re.S"> EN2 - Re.S</label></li>
-                <li><label><input type="checkbox" value="GE1 - Ha.T"> GE1 - Ha.T</label></li>
-            </ul>
-        
-            <h3>Grundkurse</h3>
-            <ul>
-                <li><label><input type="checkbox" value="bio1 - Be.B"> bio1 - Be.B</label></li>
-                <li><label><input type="checkbox" value="bio2 - St.Fr"> bio2 - St.Fr</label></li>
-                <li><label><input type="checkbox" value="ch1 - Dr.N"> ch1 - Dr.N</label></li>
-                <li><label><input type="checkbox" value="ch2 - St.Fr"> ch2 - St.Fr</label></li>
-                <li><label><input type="checkbox" value="de1 - Fö.E"> de1 - Fö.E</label></li>
-                <li><label><input type="checkbox" value="de2 - Ku.Ka"> de2 - Ku.Ka</label></li>
-                <li><label><input type="checkbox" value="de3 - Ku.Ka"> de3 - Ku.Ka</label></li>
-                <li><label><input type="checkbox" value="de4 - Le.S"> de4 - Le.S</label></li>
-                <li><label><input type="checkbox" value="en1 - Re.S"> en1 - Re.S</label></li>
-                <li><label><input type="checkbox" value="en2 - Fr.K"> en2 - Fr.K</label></li>
-                <li><label><input type="checkbox" value="ere1 - Be.R"> ere1 - Be.R</label></li>
-                <li><label><input type="checkbox" value="ere2 - Ro.D"> ere2 - Ro.D</label></li>
-                <li><label><input type="checkbox" value="ge1 - Se.M"> ge1 - Se.M</label></li>
-                <li><label><input type="checkbox" value="ge2 - Ne.M"> ge2 - Ne.M</label></li>
-                <li><label><input type="checkbox" value="ge3 - He.F"> ge3 - He.F</label></li>
-                <li><label><input type="checkbox" value="ge4 - Ha.J"> ge4 - Ha.J</label></li>
-                <li><label><input type="checkbox" value="geo1 - De.A"> geo1 - De.A</label></li>
-                <li><label><input type="checkbox" value="geo2 - Ge.N"> geo2 - Ge.N</label></li>
-                <li><label><input type="checkbox" value="geo3 - Am.U"> geo3 - Am.U</label></li>
-            </ul>
-        </div>
+    <!-- Grundkurse -->
+    <details>
+        <summary>Grundkurse</summary>
+        <ul class="grundkurse">
+            <li><input type="checkbox" id="gk1" value="ere1 - Be.R"> <label for="gk1">ere1 - Be.R</label></li>
+            <li><input type="checkbox" id="gk2" value="ere2 - Ro.D"> <label for="gk2">ere2 - Ro.D</label></li>
+            <li><input type="checkbox" id="gk3" value="ge1 - Se.M"> <label for="gk3">ge1 - Se.M</label></li>
+            <li><input type="checkbox" id="gk4" value="ge2 - Ne.M"> <label for="gk4">ge2 - Ne.M</label></li>
+            <li><input type="checkbox" id="gk5" value="ge3 - He.F"> <label for="gk5">ge3 - He.F</label></li>
+            <li><input type="checkbox" id="gk6" value="ge4 - Ha.J"> <label for="gk6">ge4 - Ha.J</label></li>
+            <li><input type="checkbox" id="gk7" value="geo1 - De.A"> <label for="gk7">geo1 - De.A</label></li>
+            <li><input type="checkbox" id="gk8" value="geo2 - Ge.N"> <label for="gk8">geo2 - Ge.N</label></li>
+            <li><input type="checkbox" id="gk9" value="geo3 - Am.U"> <label for="gk9">geo3 - Am.U</label></li>
+        </ul>
+    </details>
 
-        <button type="button" id="processButton">Termine anzeigen</button>
+    <button id="showSelection">Termine anzeigen</button>
 
-        <h3>Gefundene Klausurtermine:</h3>
-        <ul id="examDates"></ul>
-    </form>
-</div>
+    <h3>Gefundene Klausurtermine:</h3>
+    <div id="result"></div>
 
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

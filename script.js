@@ -118,11 +118,6 @@ function filterExamDates(text, courses) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    loadSelectedCourses();
-    document.getElementById("processButton").addEventListener("click", processCourses);
-});
-
 // Speichert die Kursauswahl
 function saveSelectedCourses() {
     let selectedCourses = [];
@@ -142,30 +137,6 @@ function loadSelectedCourses() {
             if (checkbox) checkbox.checked = true;
         });
     }
-}
-
-// Gibt die ausgewählten Kurse aus
-function processCourses() {
-    let selectedCourses = [];
-    document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
-        selectedCourses.push(checkbox.value);
-    });
-
-    if (selectedCourses.length === 0) {
-        alert("Bitte wähle mindestens einen Kurs aus.");
-        return;
-    }
-
-    let outputList = document.getElementById("examDates");
-    outputList.innerHTML = "";
-
-    selectedCourses.forEach(course => {
-        let listItem = document.createElement("li");
-        listItem.textContent = `Ausgewählt: ${course}`;
-        outputList.appendChild(listItem);
-    });
-
-    saveSelectedCourses();
 }
 
 // Cookies setzen
