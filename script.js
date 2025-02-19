@@ -12,16 +12,16 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.getElementById("processButton").addEventListener("click", function (event) {
-        event.preventDefault();
+        event.preventDefault(); // Verhindert das Neuladen der Seite
         processPDF();
     });
-
+    
     loadSelectedCourses();
 });
 
 // Funktion zum Abrufen der ausgewählten Kurse
 function getSelectedCourses() {
-    return Array.from(document.querySelectorAll("input[type='checkbox']:checked")).map(input => input.value);
+    return Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
 }
 
 // PDF verarbeiten
@@ -35,6 +35,7 @@ function processPDF() {
         return;
     }
 
+    setCookie("selectedCourses", courses.join(","), 7);
     progressBar.value = 0;
 
     if (pdfSource === "upload") {
@@ -61,7 +62,7 @@ function processPDF() {
     }
 }
 
-// Funktion zum Laden & Verarbeiten der PDF
+// PDF-Inhalt extrahieren und verarbeiten
 function loadAndProcessPDF(pdfArray, courses, progressBar) {
     pdfjsLib.getDocument(pdfArray).promise.then(pdf => {
         let pagesPromises = [];
@@ -81,9 +82,6 @@ function loadAndProcessPDF(pdfArray, courses, progressBar) {
 
         Promise.all(pagesPromises).then(pagesText => {
             let fullText = pagesText.join(" ").replace(/\s+/g, " ").trim();
-
-            console.log("Extrahierter PDF-Text:", fullText);
-
             filterExamDates(fullText, courses);
             progressBar.value = 100;
         });
@@ -102,7 +100,7 @@ function filterExamDates(text, courses) {
 
     courses.forEach(course => {
         const courseName = course.split(" ")[0];
-        const regex = new RegExp(`${courseName}\s*[\/\-]\s*.*?(\d{1,2}\.\d{1,2}\.\d{4})`, "gi");
+        const regex = new RegExp(`${courseName}.*?(\d{1,2}\.\d{1,2}\.\d{4})`, "gi");
 
         let match;
         while ((match = regex.exec(text)) !== null) {
@@ -118,4 +116,39 @@ function filterExamDates(text, courses) {
         noMatchItem.textContent = "Keine Klausurtermine für die ausgewählten Kurse gefunden.";
         examDatesList.appendChild(noMatchItem);
     }
+}
+
+// Gespeicherte Kursauswahl aus Cookies laden
+function loadSelectedCourses() {
+    const selectedCourses = getCookie("selectedCourses");
+    if (selectedCourses) {
+        const selectedValues = selectedCourses.split(",");
+        document.querySelectorAll('input[type="checkbox"]').forEach(input => {
+            if (selectedValues.includes(input.value)) {
+                input.checked = true;
+            }
+        });
+    }
+}
+
+// Cookies setzen
+function setCookie(name, value, days) {
+    let expires = "";
+    if (days) {
+        const date = new Date();
+        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Cookies abrufen
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i].trim();
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
+    }
+    return null;
 }
