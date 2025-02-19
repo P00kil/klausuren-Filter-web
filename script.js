@@ -118,24 +118,61 @@ function filterExamDates(text, courses) {
     }
 }
 
-// Gespeicherte Kursauswahl aus Cookies laden
+document.addEventListener("DOMContentLoaded", function () {
+    loadSelectedCourses();
+    document.getElementById("processButton").addEventListener("click", processCourses);
+});
+
+// Speichert die Kursauswahl
+function saveSelectedCourses() {
+    let selectedCourses = [];
+    document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
+        selectedCourses.push(checkbox.value);
+    });
+
+    setCookie("selectedCourses", selectedCourses.join(","), 7);
+}
+
+// Lädt die gespeicherten Kurse
 function loadSelectedCourses() {
-    const selectedCourses = getCookie("selectedCourses");
+    let selectedCourses = getCookie("selectedCourses");
     if (selectedCourses) {
-        const selectedValues = selectedCourses.split(",");
-        document.querySelectorAll('input[type="checkbox"]').forEach(input => {
-            if (selectedValues.includes(input.value)) {
-                input.checked = true;
-            }
+        selectedCourses.split(",").forEach(value => {
+            let checkbox = document.querySelector(`input[type='checkbox'][value="${value}"]`);
+            if (checkbox) checkbox.checked = true;
         });
     }
+}
+
+// Gibt die ausgewählten Kurse aus
+function processCourses() {
+    let selectedCourses = [];
+    document.querySelectorAll("input[type='checkbox']:checked").forEach(checkbox => {
+        selectedCourses.push(checkbox.value);
+    });
+
+    if (selectedCourses.length === 0) {
+        alert("Bitte wähle mindestens einen Kurs aus.");
+        return;
+    }
+
+    let outputList = document.getElementById("examDates");
+    outputList.innerHTML = "";
+
+    selectedCourses.forEach(course => {
+        let listItem = document.createElement("li");
+        listItem.textContent = `Ausgewählt: ${course}`;
+        outputList.appendChild(listItem);
+    });
+
+    saveSelectedCourses();
 }
 
 // Cookies setzen
 function setCookie(name, value, days) {
     let expires = "";
     if (days) {
-        const date = new Date();
+        let date = new Date();
         date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
         expires = "; expires=" + date.toUTCString();
     }
@@ -144,8 +181,8 @@ function setCookie(name, value, days) {
 
 // Cookies abrufen
 function getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(";");
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(";");
     for (let i = 0; i < ca.length; i++) {
         let c = ca[i].trim();
         if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);

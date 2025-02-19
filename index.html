@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klausurtermin-Filter</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
 </head>
 <body>
 
@@ -15,8 +14,8 @@
     <h2>Wähle deine Kurse aus:</h2>
     <form id="courseForm">
         <div>
-            <h3 class="collapsible">Leistungskurse</h3>
-            <ul class="content">
+            <h3>Leistungskurse</h3>
+            <ul>
                 <li><label><input type="checkbox" value="BIO1 - Ba.S"> BIO1 - Ba.S</label></li>
                 <li><label><input type="checkbox" value="CH1 - Pi.G"> CH1 - Pi.G</label></li>
                 <li><label><input type="checkbox" value="DE1 - Pe.M"> DE1 - Pe.M</label></li>
@@ -25,8 +24,8 @@
                 <li><label><input type="checkbox" value="GE1 - Ha.T"> GE1 - Ha.T</label></li>
             </ul>
         
-            <h3 class="collapsible">Grundkurse</h3>
-            <ul class="content">
+            <h3>Grundkurse</h3>
+            <ul>
                 <li><label><input type="checkbox" value="bio1 - Be.B"> bio1 - Be.B</label></li>
                 <li><label><input type="checkbox" value="bio2 - St.Fr"> bio2 - St.Fr</label></li>
                 <li><label><input type="checkbox" value="ch1 - Dr.N"> ch1 - Dr.N</label></li>
@@ -49,61 +48,13 @@
             </ul>
         </div>
 
-        <h3>Wähle die PDF-Quelle:</h3>
-        <div>
-            <input type="radio" id="defaultPDF" name="pdfSource" value="default" checked>
-            <label for="defaultPDF">Standard-PDF</label>
-        </div>
-
-        <div>
-            <input type="radio" id="uploadPDF" name="pdfSource" value="upload">
-            <label for="uploadPDF">Eigene PDF hochladen</label>
-        </div>
-
-        <div id="uploadSection" style="display: none;">
-            <input type="file" id="pdfFile" accept="application/pdf" />
-        </div>
-
-        <button id="processButton" type="button">Termine anzeigen</button>
-
-        <div class="progress-container">
-            <progress id="pdfProgress" value="0" max="100"></progress>
-        </div>
+        <button type="button" id="processButton">Termine anzeigen</button>
 
         <h3>Gefundene Klausurtermine:</h3>
         <ul id="examDates"></ul>
     </form>
 </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".collapsible").forEach(header => {
-        header.addEventListener("click", function () {
-            this.nextElementSibling.classList.toggle("active");
-        });
-    });
-});
-</script>
-
-<style>
-.collapsible {
-    cursor: pointer;
-    font-weight: bold;
-    background-color: #ddd;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-.content {
-    display: none;
-    padding: 10px;
-}
-
-.content.active {
-    display: block;
-}
-</style>
+<script src="script.js"></script>
 </body>
 </html>
-
