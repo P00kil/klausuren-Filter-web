@@ -12,13 +12,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.getElementById("processButton").addEventListener("click", processPDF);
-    loadSelectedCourses();
+    document.getElementById("processButton").addEventListener("click", function (event) {
+        event.preventDefault(); // Verhindert das Neuladen der Seite
+        processPDF();
+    });
 });
 
 // Funktion zum Abrufen der ausgewählten Kurse
 function getSelectedCourses() {
-    return Array.from(document.getElementById("courseSelect").selectedOptions).map(option => option.value);
+    return Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+        .map(checkbox => checkbox.value);
 }
 
 // PDF verarbeiten
@@ -99,7 +102,7 @@ function filterExamDates(text, courses) {
 
     courses.forEach(course => {
         const courseName = course.split(" ")[0]; // Kursnamen ohne Zusatz filtern
-        const regex = new RegExp(`${courseName}\\s*[\\/\\-]\\s*.*?(\\d{1,2}\\.\\d{1,2}\\.\\d{4})`, "gi");
+        const regex = new RegExp(`${courseName}.*?(\d{1,2}\.\d{1,2}\.\d{4})`, "gi");
 
         let match;
         while ((match = regex.exec(text)) !== null) {
@@ -115,40 +118,4 @@ function filterExamDates(text, courses) {
         noMatchItem.textContent = "Keine Klausurtermine für die ausgewählten Kurse gefunden.";
         examDatesList.appendChild(noMatchItem);
     }
-}
-
-// Gespeicherte Kursauswahl aus Cookies laden
-function loadSelectedCourses() {
-    const selectedCourses = getCookie("selectedCourses");
-    if (selectedCourses) {
-        const selectedValues = selectedCourses.split(",");
-        const selectElement = document.getElementById("courseSelect");
-        Array.from(selectElement.options).forEach(option => {
-            if (selectedValues.includes(option.value)) {
-                option.selected = true;
-            }
-        });
-    }
-}
-
-// Cookies setzen
-function setCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
-
-// Cookies abrufen
-function getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(";");
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i].trim();
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
-    }
-    return null;
 }
