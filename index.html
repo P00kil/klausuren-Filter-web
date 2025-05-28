@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klausurplanung</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Klausurplanung</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Wähle deine Kurse</h2>
+  <h2>Wähle deine Kurse</h2>
 
-    <!-- Leistungskurse -->
-    <details>
-        <summary>Leistungskurse</summary>
-        <ul class="leistungskurse">
-            <li><input type="checkbox" id="lk1" value="DE2 - KU.KA"> <label for="lk1">DE2 - KU.KA</label></li>
-            <li><input type="checkbox" id="lk2" value="DE3 - KU.KA"> <label for="lk2">DE3 - KU.KA</label></li>
-            <li><input type="checkbox" id="lk3" value="DE4 - LE.S"> <label for="lk3">DE4 - LE.S</label></li>
-            <li><input type="checkbox" id="lk4" value="EN1 - RE.S"> <label for="lk4">EN1 - RE.S</label></li>
-            <li><input type="checkbox" id="lk5" value="EN2 - FR.K"> <label for="lk5">EN2 - FR.K</label></li>
-        </ul>
-    </details>
+  <!-- Leistungskurse -->
+  <details>
+    <summary>Leistungskurse</summary>
+    <ul class="leistungskurse">
+      <li><input type="checkbox" id="lk1" value="DE2"> <label for="lk1">DE2 - KU.KA</label></li>
+      <li><input type="checkbox" id="lk2" value="DE3"> <label for="lk2">DE3 - KU.KA</label></li>
+      <li><input type="checkbox" id="lk3" value="DE4"> <label for="lk3">DE4 - LE.S</label></li>
+      <li><input type="checkbox" id="lk4" value="EN1"> <label for="lk4">EN1 - RE.S</label></li>
+      <li><input type="checkbox" id="lk5" value="EN2"> <label for="lk5">EN2 - FR.K</label></li>
+    </ul>
+  </details>
 
-    <!-- Grundkurse -->
-    <details>
-        <summary>Grundkurse</summary>
-        <ul class="grundkurse">
-            <li><input type="checkbox" id="gk1" value="ere1 - Be.R"> <label for="gk1">ere1 - Be.R</label></li>
-            <li><input type="checkbox" id="gk2" value="ere2 - Ro.D"> <label for="gk2">ere2 - Ro.D</label></li>
-            <li><input type="checkbox" id="gk3" value="ge1 - Se.M"> <label for="gk3">ge1 - Se.M</label></li>
-            <li><input type="checkbox" id="gk4" value="ge2 - Ne.M"> <label for="gk4">ge2 - Ne.M</label></li>
-            <li><input type="checkbox" id="gk5" value="ge3 - He.F"> <label for="gk5">ge3 - He.F</label></li>
-            <li><input type="checkbox" id="gk6" value="ge4 - Ha.J"> <label for="gk6">ge4 - Ha.J</label></li>
-            <li><input type="checkbox" id="gk7" value="geo1 - De.A"> <label for="gk7">geo1 - De.A</label></li>
-            <li><input type="checkbox" id="gk8" value="geo2 - Ge.N"> <label for="gk8">geo2 - Ge.N</label></li>
-            <li><input type="checkbox" id="gk9" value="geo3 - Am.U"> <label for="gk9">geo3 - Am.U</label></li>
-        </ul>
-    </details>
+  <!-- Grundkurse -->
+  <details>
+    <summary>Grundkurse</summary>
+    <ul class="grundkurse">
+      <li><input type="checkbox" id="gk1" value="ere1"> <label for="gk1">ere1 - Be.R</label></li>
+      <li><input type="checkbox" id="gk2" value="ere2"> <label for="gk2">ere2 - Ro.D</label></li>
+      <li><input type="checkbox" id="gk3" value="ge1"> <label for="gk3">ge1 - Se.M</label></li>
+      <li><input type="checkbox" id="gk4" value="ge2"> <label for="gk4">ge2 - Ne.M</label></li>
+      <li><input type="checkbox" id="gk5" value="ge3"> <label for="gk5">ge3 - He.F</label></li>
+      <li><input type="checkbox" id="gk6" value="ge4"> <label for="gk6">ge4 - Ha.J</label></li>
+      <li><input type="checkbox" id="gk7" value="geo1"> <label for="gk7">geo1 - De.A</label></li>
+      <li><input type="checkbox" id="gk8" value="geo2"> <label for="gk8">geo2 - Ge.N</label></li>
+      <li><input type="checkbox" id="gk9" value="geo3"> <label for="gk9">geo3 - Am.U</label></li>
+    </ul>
+  </details>
 
-    <button id="showSelection">Termine anzeigen</button>
+  <input type="file" id="pdfUpload" accept="application/pdf"/>
+  <button id="showSelection">Termine anzeigen</button>
 
-    <h3>Gefundene Klausurtermine:</h3>
-    <div id="result"></div>
+  <h3>Gefundene Klausurtermine:</h3>
+  <div id="result"></div>
 
-    <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
